@@ -1,5 +1,7 @@
 # NeuroGuard
 
+![NeuroGuard Architecture](assets/architecture.jpeg)
+
 ## Brain-Inspired Cognitive Decline Detection System
 
 NeuroGuard is a neuromorphic healthcare solution that leverages Spiking Neural Networks (SNNs) to identify early signs of cognitive decline.
