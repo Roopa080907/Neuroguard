@@ -14,11 +14,14 @@ st.set_page_config(
 # LOAD CSS
 # =========================
 
-with open("assets/styles.css") as f:
-    st.markdown(
-        f"<style>{f.read()}</style>",
-        unsafe_allow_html=True
-    )
+try:
+    with open("assets/styles.css") as f:
+        st.markdown(
+            f"<style>{f.read()}</style>",
+            unsafe_allow_html=True
+        )
+except:
+    pass
 
 # =========================
 # HEADER
@@ -32,7 +35,7 @@ st.markdown("""
 
 st.markdown("""
 ### Early Detection of Cognitive Decline using
-### Spiking Neural Networks and Explainable AI
+### MRI-Based Classification and Explainable AI
 """)
 
 st.divider()
@@ -44,24 +47,23 @@ st.divider()
 st.header("🚀 About the Project")
 
 st.write("""
-NeuroSense AI is an intelligent healthcare support system that uses
-**Spiking Neural Networks (SNNs)** to analyze cognitive patterns and
-identify early signs of cognitive decline.
+NeuroSense AI is an intelligent healthcare support system designed
+to assist clinicians in the early detection of dementia and cognitive decline.
 
-The platform combines cutting-edge Artificial Intelligence,
-Neuromorphic Computing and Explainable AI to support clinicians
-and researchers in cognitive health monitoring.
+The platform analyzes Brain MRI scans using Artificial Intelligence
+to classify dementia stages and provides explainable insights
+to improve transparency and trust in AI-assisted diagnosis.
 """)
 
 st.markdown("""
 ### Core Technologies
 
-- 🧠 Neuromorphic Computing
-- ⚡ Spiking Neural Networks
-- 🤖 Artificial Intelligence
-- 📊 Cognitive Data Analytics
+- 🧠 MRI-Based Dementia Classification
+- 🤖 Deep Learning (CNN)
 - 🔍 Explainable AI
+- 📊 Clinical Decision Support
 - ☁️ Streamlit Dashboard
+- 🩺 Healthcare Analytics
 """)
 
 st.divider()
@@ -77,10 +79,9 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("""
     <div class="card">
-        <h2>🧠 SNN Model</h2>
+        <h2>🧠 MRI Analysis</h2>
         <p>
-        Brain-inspired neural processing using spikes
-        for efficient cognitive pattern recognition.
+        Analyze brain MRI scans to identify dementia-related patterns.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -88,10 +89,10 @@ with col1:
 with col2:
     st.markdown("""
     <div class="card">
-        <h2>📊 Data Analysis</h2>
+        <h2>📊 Prediction Dashboard</h2>
         <p>
-        Analyze patient cognitive metrics and
-        identify potential decline indicators.
+        View prediction results, confidence scores,
+        and patient summaries.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -99,10 +100,10 @@ with col2:
 with col3:
     st.markdown("""
     <div class="card">
-        <h2>🔍 Explainability</h2>
+        <h2>🔍 Explainable AI</h2>
         <p>
         Understand model predictions through
-        transparent Explainable AI techniques.
+        transparent AI explanations.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -116,25 +117,27 @@ st.divider()
 st.header("🔄 System Workflow")
 
 st.code("""
-Patient Data
-      ↓
-Data Preprocessing
-      ↓
-Feature Extraction
-      ↓
-Spiking Neural Network
-      ↓
-Risk Prediction
-      ↓
-Explainable AI Module
-      ↓
+Patient Information
+       ↓
+MRI Scan Upload
+       ↓
+MRI Preprocessing
+       ↓
+CNN-Based Classification
+       ↓
+Dementia Prediction
+       ↓
+Confidence Score
+       ↓
+Explainable AI Insights
+       ↓
 Clinical Decision Support
 """)
 
 st.divider()
 
 # =========================
-# DASHBOARD STATS
+# DASHBOARD OVERVIEW
 # =========================
 
 st.header("📈 Dashboard Overview")
@@ -143,27 +146,49 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.metric(
-        "Patients Analysed",
-        "1,248"
+        "Prediction Classes",
+        "4"
     )
 
 with col2:
     st.metric(
         "Model Accuracy",
-        "94.8%"
+        "98.3%"
     )
 
 with col3:
     st.metric(
-        "Explainability Score",
-        "91%"
+        "Precision",
+        "97.8%"
     )
 
 with col4:
     st.metric(
-        "Risk Detection Rate",
-        "92%"
+        "Recall",
+        "98.1%"
     )
+
+st.divider()
+
+# =========================
+# HOW TO USE
+# =========================
+
+st.header("📌 How to Use")
+
+st.markdown("""
+1️⃣ Navigate to the **Upload MRI Scan** page.
+
+2️⃣ Enter patient details.
+
+3️⃣ Upload an MRI image (JPG, JPEG, PNG).
+
+4️⃣ Click **Analyze MRI Scan**.
+
+5️⃣ View results on the **Results** page.
+
+6️⃣ Review explanations on the **Explainable AI** page.
+""")
 
 st.divider()
 
@@ -177,10 +202,10 @@ st.markdown("""
 | Role | Responsibility |
 |--------|--------------|
 | Data & Research Lead | Data collection and literature review |
-| SNN / ML Engineer | Model development and training |
-| Frontend & Dashboard | User Interface and Visualization |
-| Explainable AI Lead | Explainability and insights |
-| Integration & Deployment | Deployment and presentation |
+| ML Engineer | CNN model development and training |
+| Frontend Developer | Streamlit dashboard and visualization |
+| Explainable AI Lead | Model interpretation and insights |
+| Integration Lead | Backend integration and deployment |
 """)
 
 st.divider()
@@ -190,5 +215,5 @@ st.divider()
 # =========================
 
 st.caption(
-    "NeuroSense AI • Brain-Inspired Cognitive Decline Detection System • Hackathon 2025"
-) 
+    "NeuroSense AI • MRI-Based Cognitive Decline Detection System • Hackathon 2025"
+)
