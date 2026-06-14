@@ -1,0 +1,178 @@
+/* =========================
+   GLOBAL STYLING
+========================= */
+
+.main {
+    background: #071021;
+    color: white;
+}
+
+.stApp {
+    background: linear-gradient(
+        135deg,
+        #071021 0%,
+        #0b162d 50%,
+        #101c38 100%
+    );
+}
+
+/* =========================
+   HEADINGS
+========================= */
+
+h1 {
+    color: cyan !important;
+    font-weight: 800 !important;
+}
+
+h2 {
+    color: #38bdf8 !important;
+    font-weight: 700 !important;
+}
+
+h3 {
+    color: #a78bfa !important;
+}
+
+/* =========================
+   PARAGRAPHS
+========================= */
+
+p,
+li,
+label,
+span {
+    color: #d1d5db !important;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+section[data-testid="stSidebar"] {
+    background: #0f172a;
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+section[data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 25px;
+    margin: 10px 0;
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.stButton button {
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 25px;
+    font-weight: 600;
+}
+
+.stButton button:hover {
+    transform: scale(1.03);
+}
+
+/* =========================
+   FILE UPLOADER
+========================= */
+
+[data-testid="stFileUploader"] {
+    border: 2px dashed #38bdf8;
+    border-radius: 15px;
+    padding: 20px;
+    background: rgba(56,189,248,0.05);
+}
+
+/* =========================
+   METRICS
+========================= */
+
+[data-testid="metric-container"] {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 15px;
+}
+
+/* =========================
+   TABLES
+========================= */
+
+table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+thead tr {
+    background: #1e293b;
+}
+
+tbody tr {
+    background: #0f172a;
+}
+
+/* =========================
+   SUCCESS BOX
+========================= */
+
+.stSuccess {
+    border-radius: 12px;
+}
+
+/* =========================
+   WARNING BOX
+========================= */
+
+.stWarning {
+    border-radius: 12px;
+}
+
+/* =========================
+   INFO BOX
+========================= */
+
+.stInfo {
+    border-radius: 12px;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #38bdf8;
+    border-radius: 10px;
+}
