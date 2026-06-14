@@ -21,13 +21,26 @@ gender = st.session_state.get("gender", "Not Available")
 patient_id = st.session_state.get("patient_id", "Not Available")
 
 # =========================
-# DEMO PREDICTION DATA
+# FETCH PREDICTION DATA
 # =========================
-# Later connect this with Flask API
 
-prediction = "Moderate Dementia"
-confidence = 99
-risk_level = "High"
+prediction = st.session_state.get("prediction", "Not Available")
+confidence = st.session_state.get("confidence", 0)
+
+try:
+    confidence = float(confidence)
+except:
+    confidence = 0
+
+# Dynamic Risk Level
+if prediction in ["Moderate Dementia", "Severe Dementia"]:
+    risk_level = "High"
+elif prediction in ["Mild Dementia", "Very Mild Dementia"]:
+    risk_level = "Medium"
+elif prediction == "Non Demented":
+    risk_level = "Low"
+else:
+    risk_level = "Not Available"
 
 # =========================
 # PAGE TITLE
@@ -89,7 +102,7 @@ with col1:
 with col2:
     st.metric(
         label="Confidence",
-        value=f"{confidence}%"
+        value=f"{confidence:.2f}%"
     )
 
 with col3:
@@ -104,7 +117,8 @@ st.divider()
 # RESULT CARD
 # =========================
 
-st.success(f"""
+if prediction != "Not Available":
+    st.success(f"""
 ### Diagnosis Result
 
 The AI model predicts:
@@ -113,8 +127,12 @@ The AI model predicts:
 
 with a confidence score of:
 
-**{confidence}%**
+**{confidence:.2f}%**
 """)
+else:
+    st.warning(
+        "No prediction available. Please upload and analyze an MRI scan first."
+    )
 
 st.divider()
 
@@ -139,8 +157,8 @@ st.divider()
 st.subheader("⚠️ Risk Distribution")
 
 risk_df = pd.DataFrame({
-    "Value": [80, 20]
-}, index=["Risk", "Healthy"])
+    "Value": [confidence, 100 - confidence]
+}, index=["Predicted", "Remaining"])
 
 st.bar_chart(risk_df)
 
@@ -188,9 +206,17 @@ st.divider()
 
 st.subheader("🏥 Clinical Interpretation")
 
-st.info("""
-Moderate Dementia indicates noticeable cognitive decline
-that may affect daily activities and memory function.
+interpretation = {
+    "Non Demented": "No significant signs of dementia detected.",
+    "Very Mild Dementia": "Very early cognitive decline may be present.",
+    "Mild Dementia": "Mild cognitive impairment is indicated.",
+    "Moderate Dementia": "Noticeable cognitive decline affecting daily activities.",
+    "Severe Dementia": "Advanced dementia symptoms may be present."
+}
+
+st.info(f"""
+{interpretation.get(prediction,
+'Clinical interpretation unavailable.')}
 
 This AI result is intended as a clinical support tool
 and should not replace professional medical diagnosis.
