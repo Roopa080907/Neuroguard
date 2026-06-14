@@ -1,0 +1,15 @@
+Brain MRI / PET Scan
+        ↓
+Image Preprocessing
+(Noise removal, normalization)
+        ↓
+Feature Extraction
+(Brain region patterns)
+        ↓
+Spike Encoding
+(Convert data into neural spikes)
+        ↓
+Spiking Neural Network
+        ↓
+Cognitive Decline Prediction
+(Normal / MCI / Decline)
