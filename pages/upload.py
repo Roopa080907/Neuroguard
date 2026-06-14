@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+import requests
 
 # =========================
 # PAGE CONFIG
@@ -100,7 +101,6 @@ if uploaded_file is not None:
         )
 
     with col2:
-
         st.info(f"""
 ### Patient Summary
 
@@ -120,7 +120,7 @@ if uploaded_file is not None:
 
 ✔ Ready for AI analysis
 
-✔ CNN Model Enabled
+✔ AI Model Enabled
 
 ✔ Explainable AI Ready
 """)
@@ -133,32 +133,53 @@ if uploaded_file is not None:
 
     if st.button("🧠 Analyze MRI Scan"):
 
-        # Save uploaded image name
         st.session_state["uploaded_image"] = uploaded_file.name
 
         with st.spinner("Analyzing MRI Scan..."):
 
-            progress = st.progress(0)
+            try:
+                files = {
+                    "file": (
+                        uploaded_file.name,
+                        uploaded_file.getvalue(),
+                        uploaded_file.type
+                    )
+                }
 
-            for i in range(100):
-                progress.progress(i + 1)
+                response = requests.post(
+                    "http://127.0.0.1:5000/predict",
+                    files=files
+                )
 
-        st.success("✅ Analysis Completed Successfully")
+                if response.status_code == 200:
 
-        st.info("""
+                    result = response.json()
+
+                    st.session_state["prediction"] = result["prediction"]
+                    st.session_state["confidence"] = result["confidence"]
+
+                    st.success("✅ Analysis Completed Successfully")
+
+                    st.info("""
 Prediction results can now be viewed
 on the Results page.
 """)
 
-# =========================
-# EMPTY STATE
-# =========================
+                else:
+                    st.error(
+                        f"Prediction failed. Status code: {response.status_code}"
+                    )
+
+            except Exception as e:
+                st.error(f"Error connecting to backend: {e}")
 
 else:
 
     st.warning(
         "⚠️ Please upload a JPG, JPEG or PNG MRI image to continue."
     )
+
+    st.info("Connecting with SNN model...")
 
     st.markdown("""
 ### Supported Formats
