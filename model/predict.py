@@ -9,7 +9,7 @@ model = AlzheimerCNN().to(device)
 model.load_state_dict(torch.load("alzheimer_model.pth", map_location=device))
 model.eval()
 
-classes = ['Mild Dementia', 'Moderate Dementia', 'Non Demented', 'Very mild Dementia']
+classes = ['Mild Dementia', 'Moderate Dementia', 'Non Demented']
 
 transform = transforms.Compose([
     transforms.Resize((128, 128)),

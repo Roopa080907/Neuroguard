@@ -3,28 +3,26 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 
-from model import AlzheimerCNN
+from model import AlzheimerSNN
 
 # Device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Transform (IMPORTANT FIX)
+# Transform
 transform = transforms.Compose([
     transforms.Grayscale(num_output_channels=1),
     transforms.Resize((128, 128)),
     transforms.ToTensor()
 ])
 
-# Dataset
+# Dataset (TRAIN ONLY)
 train_dataset = datasets.ImageFolder(
-    root=r"C:\Users\roopa\OneDrive\Desktop\neuroguard\data\raw\images",
+    root=r"C:\Users\roopa\OneDrive\Desktop\neuroguard\data\train",
     transform=transform
 )
 
-# Debug
 print("Classes:", train_dataset.classes)
 print("Total images:", len(train_dataset))
 
@@ -36,24 +34,18 @@ train_loader = DataLoader(
 )
 
 # Model
-model = AlzheimerCNN().to(device)
+model = AlzheimerSNN().to(device)
 
-# CLASS WEIGHTS (IMPORTANT FIX for "very mild")
-class_weights = compute_class_weight(
-    class_weight="balanced",
-    classes=np.unique(train_dataset.targets),
-    y=train_dataset.targets
-)
+# Loss (simple safe version for hackathon)
+criterion = nn.CrossEntropyLoss()
 
-class_weights = torch.tensor(class_weights, dtype=torch.float).to(device)
-
-# Loss + Optimizer
-criterion = nn.CrossEntropyLoss(weight=class_weights)
+# Optimizer
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-# Training
-epochs = 10
+# Epochs (START SMALL)
+epochs = 6
 
+# Training loop
 for epoch in range(epochs):
 
     model.train()
@@ -77,6 +69,6 @@ for epoch in range(epochs):
     print(f"Epoch [{epoch+1}/{epochs}] Loss: {running_loss/len(train_loader):.4f}")
 
 # Save model
-torch.save(model.state_dict(), "alzheimer_model.pth")
+torch.save(model.state_dict(), "alzheimer_snn_model.pth")
 
 print("Model saved successfully!")
