@@ -8,56 +8,77 @@ from model import AlzheimerSNN
 
 app = Flask(__name__)
 
+# -------------------------
+# CONFIG
+# -------------------------
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Load model
+# -------------------------
+# LOAD MODEL
+# -------------------------
 model = AlzheimerSNN().to(device)
-model.load_state_dict(torch.load("alzheimer_snn_model.pth", map_location=device))
+
+model_path = "alzheimer_snn_model.pth"  # ✅ FIXED PATH FOR RENDER + LOCAL
+model.load_state_dict(torch.load(model_path, map_location=device))
+
 model.eval()
 
-# Classes (3-class setup)
+# -------------------------
+# CLASSES
+# -------------------------
 classes = ['Mild Dementia', 'Moderate Dementia', 'Non Demented']
 
-# Transform (same as training)
+# -------------------------
+# TRANSFORM
+# -------------------------
 transform = transforms.Compose([
     transforms.Grayscale(num_output_channels=1),
     transforms.Resize((128, 128)),
     transforms.ToTensor()
 ])
 
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
+# -------------------------
+# ROUTES
+# -------------------------
 @app.route("/")
 def home():
     return "NeuroGuard SNN API is running 🚀"
 
-
 @app.route("/predict", methods=["POST"])
 def predict():
-    if "file" not in request.files:
-        return jsonify({"error": "No file uploaded"})
+    try:
+        if "file" not in request.files:
+            return jsonify({"error": "No file uploaded"}), 400
 
-    file = request.files["file"]
-    path = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(path)
+        file = request.files["file"]
+        path = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(path)
 
-    # Load image
-    image = Image.open(path)
-    image = transform(image).unsqueeze(0).to(device)
+        # preprocess
+        image = Image.open(path).convert("RGB")
+        image = transform(image).unsqueeze(0).to(device)
 
-    # Prediction
-    with torch.no_grad():
-        output = model(image)
-        probs = torch.softmax(output, dim=1)
-        confidence, pred = torch.max(probs, 1)
+        # inference
+        with torch.no_grad():
+            output = model(image)
+            probs = torch.softmax(output, dim=1)
+            confidence, pred = torch.max(probs, 1)
 
-    return jsonify({
-        "prediction": classes[pred.item()],
-        "confidence": float(confidence.item())
-    })
+        return jsonify({
+            "prediction": classes[pred.item()],
+            "confidence": round(float(confidence.item()), 4)
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
+# -------------------------
+# RUN (FOR RENDER)
+# -------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # ✅ Render uses PORT env variable
+    app.run(host="0.0.0.0", port=port, debug=False)
