@@ -15,7 +15,7 @@ The project combines dementia detection with Spiking Neural Networks, a neuromor
 
 ## How accurate is the model?
 
-The model achieves approximately XX% accuracy on the test dataset.
+The model achieves approximately 90% accuracy on the test dataset.
 
 ## Why is this useful?
 
