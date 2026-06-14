@@ -50,6 +50,22 @@ Patient Data
 
 ---
 
+## Innovation
+
+NeuroGuard uses Spiking Neural Networks (SNNs) inspired by biological neurons to detect cognitive decline from MRI scans.
+
+Unlike traditional neural networks, SNNs process information through spikes, making them suitable for neuromorphic computing applications.
+
+## Future Scope
+
+- Real-time cognitive monitoring
+- Hospital integration
+- Cloud deployment
+- Neuromorphic hardware support
+- Remote dementia screening
+
+---
+
 ## Impact
 
 NeuroGuard enables earlier diagnosis, assists clinicians in decision-making, and supports proactive healthcare intervention.
