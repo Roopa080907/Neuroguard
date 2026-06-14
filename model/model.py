@@ -1,16 +1,38 @@
 import torch
 import torch.nn as nn
 
-class BrainNet(nn.Module):
-    def __init__(self, num_classes):
+class AlzheimerCNN(nn.Module):
+    def __init__(self):
         super().__init__()
 
-        self.network = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(224 * 224, 128),
+        self.conv_layers = nn.Sequential(
+            nn.Conv2d(1, 32, kernel_size=3, padding=1),
+            nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.Linear(128, num_classes)
+            nn.MaxPool2d(2),
+
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+
+            nn.Conv2d(64, 128, kernel_size=3, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+            nn.MaxPool2d(2)
+        )
+
+        self.fc_layers = nn.Sequential(
+            nn.Flatten(),
+
+            nn.Linear(128 * 16 * 16, 256),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+
+            nn.Linear(256, 4)
         )
 
     def forward(self, x):
-        return self.network(x)
+        x = self.conv_layers(x)
+        x = self.fc_layers(x)
+        return x
